@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import com.quickcommerce.thiskostha.entity.Restaurant;
 @Repository
-public interface Restaurant_Repository extends JpaRepository<Restaurant, Long>{
+
+public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
 
 }
