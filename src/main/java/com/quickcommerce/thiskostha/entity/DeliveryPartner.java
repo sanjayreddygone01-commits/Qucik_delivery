@@ -19,10 +19,7 @@ public class DeliveryPartner {
 
     @OneToMany(mappedBy = "deliveryPartner", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Order> orders;
-
-    @OneToOne
-    @JoinColumn(name = "vehicle_id")
-    private Vehicle vehicle;
+    private String vehicleNo;
 
     public DeliveryPartner() {}
 
@@ -57,6 +54,13 @@ public class DeliveryPartner {
     public List<Order> getOrders() { return orders; }
     public void setOrders(List<Order> orders) { this.orders = orders; }
 
-    public Vehicle getVehicle() { return vehicle; }
-    public void setVehicle(Vehicle vehicle) { this.vehicle = vehicle; }
+	public String getVehicleNo() {
+		return vehicleNo;
+	}
+
+	public void setVehicleNo(String vehicleNo) {
+		this.vehicleNo = vehicleNo;
+	}
+
+    
 }
