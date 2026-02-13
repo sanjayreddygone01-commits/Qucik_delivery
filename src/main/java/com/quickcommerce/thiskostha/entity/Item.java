@@ -15,7 +15,7 @@ public class Item {
     @NotBlank private String name;
     private String description;
     private Double price;
-    private String type; // veg/non-veg
+    private String type; 
     private Boolean availability;
     private Double rating;
     private Integer numberOfReviews;
