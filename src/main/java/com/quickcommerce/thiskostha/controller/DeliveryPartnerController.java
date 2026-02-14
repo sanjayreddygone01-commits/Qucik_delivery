@@ -1,0 +1,27 @@
+package com.quickcommerce.thiskostha.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.quickcommerce.thiskostha.dto.DeliveryPartnerDTO;
+import com.quickcommerce.thiskostha.dto.ResponseStructure;
+import com.quickcommerce.thiskostha.entity.DeliveryPartner;
+import com.quickcommerce.thiskostha.service.DeliveryPartnerService;
+
+@RestController
+	@RequestMapping("/deliverypartner")
+	public class DeliveryPartnerController {
+		@Autowired
+		private DeliveryPartnerService deliveryPartnerService;
+		@PostMapping("/register")
+		public ResponseEntity<ResponseStructure<DeliveryPartner>> register(@RequestBody DeliveryPartnerDTO deliveryPartnerdto){
+			return deliveryPartnerService.register(deliveryPartnerdto);
+			
+		}
+
+}
+	
