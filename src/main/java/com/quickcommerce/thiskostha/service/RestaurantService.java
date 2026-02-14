@@ -15,9 +15,9 @@ import com.quickcommerce.thiskostha.repository.RestaurantRepository;
 
 public class RestaurantService {
 	@Autowired
-	private static RestaurantRepository restaurantRepo;
+	private  RestaurantRepository restaurantRepo;
 	
-	public static ResponseEntity<ResponseStructure<Restaurant>> register(RestaurantDTO restaurantdto) {
+	public  ResponseEntity<ResponseStructure<Restaurant>> register(RestaurantDTO restaurantdto) {
 		Restaurant restaurant = new Restaurant();
 		restaurant.setName(restaurantdto.getName());
 		restaurant.setPhone(restaurantdto.getPhone());
