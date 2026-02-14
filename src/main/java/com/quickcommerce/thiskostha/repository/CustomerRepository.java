@@ -7,4 +7,8 @@ import com.quickcommerce.thiskostha.entity.Customer;
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
 
+	Customer findByPhone(String phone);
+
+	void deleteByPhone(String phone);
+
 }

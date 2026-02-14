@@ -31,6 +31,27 @@ public class CustomerService {
 		return new ResponseEntity<ResponseStructure<Customer>>(rs,HttpStatus.CREATED);
 		
 	}
+
+	public ResponseEntity<ResponseStructure<Customer>> findCustomer(String phone) {
+		Customer customer =customerRepo.findByPhone(phone);
+		if(customer==null) {throw new RuntimeException();}
+		ResponseStructure<Customer> rs = new ResponseStructure<Customer>();
+		rs.setStatuscode(HttpStatus.FOUND.value());
+		rs.setMessage("customer fteched successfully");
+		rs.setData(customer);
+		
+		return new ResponseEntity<ResponseStructure<Customer>>(rs,HttpStatus.FOUND);
+	}
+
+	public ResponseEntity<ResponseStructure<Customer>> deleteCustomer(String phone) {
+		customerRepo.deleteByPhone(phone);
+		ResponseStructure<Customer> rs = new ResponseStructure<Customer>();
+		rs.setStatuscode(HttpStatus.OK.value());
+		rs.setMessage("customer deleted successfully");
+		rs.setData(null);
+		
+		return new ResponseEntity<ResponseStructure<Customer>>(rs,HttpStatus.OK);
+	}
 	
 	
 	
