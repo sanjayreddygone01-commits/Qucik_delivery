@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.quickcommerce.thiskostha.dto.ResponseStructure;
 import com.quickcommerce.thiskostha.dto.RestaurantDTO;
+import com.quickcommerce.thiskostha.entity.Customer;
 import com.quickcommerce.thiskostha.entity.Restaurant;
 import com.quickcommerce.thiskostha.repository.RestaurantRepository;
 
@@ -29,10 +30,36 @@ public class RestaurantService {
 		restaurantRepo.save(restaurant);
 		ResponseStructure<Restaurant> rs = new ResponseStructure<Restaurant>();
 		rs.setStatuscode(HttpStatus.CREATED.value());
-		rs.setMessage("customer saved successfully");
+		rs.setMessage("Restauarant saved successfully");
 		rs.setData(restaurant);
 		
 		return new ResponseEntity<ResponseStructure<Restaurant>>(rs,HttpStatus.CREATED);
+	}
+
+	
+
+	public ResponseEntity<ResponseStructure<Restaurant>> findrestaurant(String phone) {
+		
+		Restaurant restaurant =restaurantRepo.findByPhone(phone);
+		if(restaurant==null) {throw new RuntimeException();}
+		ResponseStructure<Restaurant> rs = new ResponseStructure<Restaurant>();
+		rs.setStatuscode(HttpStatus.FOUND.value());
+		rs.setMessage("customer fteched successfully");
+		rs.setData(restaurant);
+		
+		return new ResponseEntity<ResponseStructure<Restaurant>>(HttpStatus.FOUND);	
+		}
+	
+	
+	public ResponseEntity<ResponseStructure<Restaurant>> deleteCustomer(String phone){
+		restaurantRepo.deleteByPhone(phone);
+		ResponseStructure<Restaurant> rs = new ResponseStructure<Restaurant>();
+		rs.setStatuscode(HttpStatus.OK.value());
+		rs.setMessage("Restaurant Deleted Successfully");
+         
+		rs.setData(null);
+		return new ResponseEntity<ResponseStructure<Restaurant>>(rs,HttpStatus.OK);
+		
 	}
 
 }

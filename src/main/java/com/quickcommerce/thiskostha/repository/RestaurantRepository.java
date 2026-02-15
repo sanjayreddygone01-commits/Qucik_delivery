@@ -8,4 +8,10 @@ import com.quickcommerce.thiskostha.entity.Restaurant;
 
 public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
 
+	Restaurant findByPhone(String phone);
+	
+	void deleteByPhone(String phone);
+
+
+
 }
