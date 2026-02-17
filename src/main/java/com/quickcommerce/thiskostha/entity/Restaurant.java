@@ -16,7 +16,6 @@ public class Restaurant {
     @NotBlank private String name;
     @NotBlank private String phone;
     @Email private String email;
-    @NotBlank private String address;
     private String description;
     private int packagefees;
    
@@ -27,10 +26,21 @@ public class Restaurant {
 
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Order> orders;
+    @OneToOne (cascade = CascadeType.ALL, orphanRemoval = true)
+    private Address address;
 
    
-    public Restaurant(Long id, @NotBlank String name, @NotBlank String phone, @Email String email,
-			@NotBlank String address, String description, int packagefees, String type, List<Item> menuItems,
+   
+    
+	public Restaurant() {
+		super();
+	}
+
+
+
+
+	public Restaurant(Long id, @NotBlank String name, @NotBlank String phone, @Email String email,
+			@NotBlank Address address, String description, int packagefees, String type, List<Item> menuItems,
 			List<Order> orders) {
 		super();
 		this.id = id;
@@ -44,22 +54,90 @@ public class Restaurant {
 		this.menuItems = menuItems;
 		this.orders = orders;
 	}
-    
-	public Restaurant() {
-		super();
+
+
+
+
+	public Long getId() {
+		return id;
 	}
 
-	// Getters & Setters
-    public Long getId() { return id; } public void setId(Long id) { this.id = id; }
-    public String getName() { return name; } public void setName(String name) { this.name = name; }
-    public String getPhone() { return phone; } public void setPhone(String phone) { this.phone = phone; }
-    public String getEmail() { return email; } public void setEmail(String email) { this.email = email; }
-    public String getAddress() { return address; } public void setAddress(String address) { this.address = address; }
-    public String getDescription() { return description; } public void setDescription(String description) { this.description = description; }
-    public String getType() { return type; } public void setType(String type) { this.type = type; }
-    public List<Item> getMenuItems() { return menuItems; } public void setMenuItems(List<Item> menuItems) { this.menuItems = menuItems; }
-    public List<Order> getOrders() { return orders; } public void setOrders(List<Order> orders) { this.orders = orders; }
 
+
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+
+
+
+	public String getName() {
+		return name;
+	}
+
+
+
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+
+
+
+	public String getPhone() {
+		return phone;
+	}
+
+
+
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+
+
+
+	public String getEmail() {
+		return email;
+	}
+
+
+
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+
+
+
+	public Address getAddress() {
+		return address;
+	}
+
+
+
+
+	public void setAddress(Address address) {
+		this.address = address;
+	}
+
+
+
+
+	public String getDescription() {
+		return description;
+	}
+
+
+
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
 	public int getPackagefees() {
 		return packagefees;
 	}
@@ -67,5 +145,30 @@ public class Restaurant {
 	public void setPackagefees(int packagefees) {
 		this.packagefees = packagefees;
 	}
+
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public List<Item> getMenuItems() {
+		return menuItems;
+	}
+
+public void setMenuItems(List<Item> menuItems) {
+		this.menuItems = menuItems;
+	}
+
+public List<Order> getOrders() {
+		return orders;
+	}
+
+public void setOrders(List<Order> orders) {
+		this.orders = orders;
+	}
+
+
     
 }

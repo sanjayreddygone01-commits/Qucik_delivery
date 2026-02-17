@@ -28,4 +28,23 @@ public class DeliveryPartnerService {
 		
 		return new ResponseEntity<ResponseStructure<DeliveryPartner>>(rs,HttpStatus.CREATED);
 	}
+	public ResponseEntity<ResponseStructure<DeliveryPartner>> deleteDeliveryPartner(String phone) {
+		deliveryPartnerRepo.deleteByPhone(phone);
+		ResponseStructure<DeliveryPartner> rs = new ResponseStructure<DeliveryPartner>();
+		rs.setStatuscode(HttpStatus.OK.value());
+		rs.setMessage("deliveryPartner deleted successfully");
+		rs.setData(null);
+		
+		return new ResponseEntity<ResponseStructure<DeliveryPartner>>(rs,HttpStatus.OK);
+	}
+	public ResponseEntity<ResponseStructure<DeliveryPartner>> findDeliveryPartner(String phone) {
+		DeliveryPartner deliveryPartner =deliveryPartnerRepo.findByPhone(phone);
+		if(deliveryPartner==null) {throw new RuntimeException();}
+		ResponseStructure<DeliveryPartner> rs = new ResponseStructure<DeliveryPartner>();
+		rs.setStatuscode(HttpStatus.FOUND.value());
+		rs.setMessage("deliveryPartner fteched successfully");
+		rs.setData(deliveryPartner);
+		
+		return new ResponseEntity<ResponseStructure<DeliveryPartner>>(rs,HttpStatus.FOUND);
+		}
 }
