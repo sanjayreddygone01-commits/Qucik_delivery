@@ -37,5 +37,4 @@ import com.quickcommerce.thiskostha.service.DeliveryPartnerService;
 		}
 }
 
-}
 	
