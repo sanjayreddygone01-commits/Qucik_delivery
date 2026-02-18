@@ -1,3 +1,5 @@
+
+
 package com.quickcommerce.thiskostha.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,3 +36,6 @@ import com.quickcommerce.thiskostha.service.DeliveryPartnerService;
 			return deliveryPartnerService.deleteDeliveryPartner(phone);	
 		}
 }
+
+}
+	

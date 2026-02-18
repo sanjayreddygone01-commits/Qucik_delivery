@@ -5,36 +5,13 @@ public class RestaurantDTO {
 	  private String name;
 	    private String phone;
 	     private String email;
-	    private String address;
+	    private LocationCordinates cordinates;
 	    private String description;
 	    private int packagefees;
 	   
 		private String type;
 
 		
-		
-		
-		public RestaurantDTO(String name, String phone, String email, String address, String description,
-				int packagefees, String type) {
-			super();
-			this.name = name;
-			this.phone = phone;
-			this.email = email;
-			this.address = address;
-			this.description = description;
-			this.packagefees = packagefees;
-			this.type = type;
-		}
-		
-		
-
-		public RestaurantDTO() {
-			super();
-			// TODO Auto-generated constructor stub
-		}
-
-
-
 		public String getName() {
 			return name;
 		}
@@ -47,9 +24,11 @@ public class RestaurantDTO {
 			return phone;
 		}
 
+
 		public void setPhone(String phone) {
 			this.phone = phone;
 		}
+
 
 		public String getEmail() {
 			return email;
@@ -59,12 +38,12 @@ public class RestaurantDTO {
 			this.email = email;
 		}
 
-		public String getAddress() {
-			return address;
+		public LocationCordinates getCordinates() {
+			return cordinates;
 		}
 
-		public void setAddress(String address) {
-			this.address = address;
+		public void setCordinates(LocationCordinates cordinates) {
+			this.cordinates = cordinates;
 		}
 
 		public String getDescription() {
@@ -79,9 +58,11 @@ public class RestaurantDTO {
 			return packagefees;
 		}
 
+
 		public void setPackagefees(int packagefees) {
 			this.packagefees = packagefees;
 		}
+
 
 		public String getType() {
 			return type;
@@ -89,8 +70,26 @@ public class RestaurantDTO {
 
 		public void setType(String type) {
 			this.type = type;
-		} 
-		
-		
+		}
+
+
+public RestaurantDTO(String name, String phone, String email, LocationCordinates cordinates, String description,
+				int packagefees, String type) {
+			super();
+			this.name = name;
+			this.phone = phone;
+			this.email = email;
+			this.cordinates = cordinates;
+			this.description = description;
+			this.packagefees = packagefees;
+			this.type = type;
+		}
+
+
+
+		public RestaurantDTO() {
+			super();
+			// TODO Auto-generated constructor stub
+		}
 		
 }

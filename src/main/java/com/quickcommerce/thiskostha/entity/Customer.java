@@ -18,7 +18,7 @@ public class Customer {
     @Email private String email;
     private String gender;
 
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy="customer",cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Address> addresses;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -33,17 +33,82 @@ public class Customer {
     private List<Item> cartItems;
 
     public Customer() {}
-    public Customer(Long id, String name, String phone, String email, String gender) {
-        this.id = id; this.name = name; this.phone = phone; this.email = email; this.gender = gender;
-    }
 
-    // Getters & Setters
-    public Long getId() { return id; } public void setId(Long id) { this.id = id; }
-    public String getName() { return name; } public void setName(String name) { this.name = name; }
-    public String getPhone() { return phone; } public void setPhone(String phone) { this.phone = phone; }
-    public String getEmail() { return email; } public void setEmail(String email) { this.email = email; }
-    public String getGender() { return gender; } public void setGender(String gender) { this.gender = gender; }
-    public List<Address> getAddresses() { return addresses; } public void setAddresses(List<Address> addresses) { this.addresses = addresses; }
-    public List<Order> getOrders() { return orders; } public void setOrders(List<Order> orders) { this.orders = orders; }
-    public List<Item> getCartItems() { return cartItems; } public void setCartItems(List<Item> cartItems) { this.cartItems = cartItems; }
+	public Customer(Long id, @NotBlank String name, @NotBlank String phone, @Email String email, String gender,
+			List<Address> addresses, List<Order> orders, List<Item> cartItems) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.phone = phone;
+		this.email = email;
+		this.gender = gender;
+		this.addresses = addresses;
+		this.orders = orders;
+		this.cartItems = cartItems;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
+	public List<Address> getAddresses() {
+		return addresses;
+	}
+
+	public void setAddresses(List<Address> addresses) {
+		this.addresses = addresses;
+	}
+
+	public List<Order> getOrders() {
+		return orders;
+	}
+
+	public void setOrders(List<Order> orders) {
+		this.orders = orders;
+	}
+
+	public List<Item> getCartItems() {
+		return cartItems;
+	}
+
+	public void setCartItems(List<Item> cartItems) {
+		this.cartItems = cartItems;
+	}
+   
 }

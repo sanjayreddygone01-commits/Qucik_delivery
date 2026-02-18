@@ -48,3 +48,5 @@ public class DeliveryPartnerService {
 		return new ResponseEntity<ResponseStructure<DeliveryPartner>>(rs,HttpStatus.FOUND);
 	} 
 }
+		}
+}

@@ -2,6 +2,7 @@ package com.quickcommerce.thiskostha.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "orders")
@@ -20,6 +21,22 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
+    
+    @ManyToOne
+    @JoinColumn(name="pickup_address_id")
+    private Address pickupAddress;
+    
+    @ManyToOne
+    @JoinColumn(name="delivery_address_id")
+    private Address deliveryAddress;
+
+    @ManyToMany
+    @JoinTable(
+        name = "order_items",
+        joinColumns = @JoinColumn(name="order_id"),
+        inverseJoinColumns = @JoinColumn(name="item_id")
+    )
+    private List<Item> items;
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
@@ -29,7 +46,7 @@ public class Order {
     @JoinColumn(name = "delivery_partner_id")
     private DeliveryPartner deliveryPartner;
 
-    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy="order",cascade = CascadeType.ALL)
     private Payment payment;
 
 	public Order(Long id, String status, Double cost, String paymentStatus, LocalDateTime orderTime,
