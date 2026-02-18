@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,9 +33,13 @@ public ResponseEntity<ResponseStructure<Restaurant>> findrestaurant(@RequestPara
 	
 }
 
-@DeleteMapping("//deletecustomer/{phoneno}")
-public ResponseEntity<ResponseStructure<Restaurant>> deleteCustomer(@RequestParam String phone){
-	return restaurantService.deleteCustomer(phone);
+@DeleteMapping("/deleterestaurant/{phoneno}")
+public ResponseEntity<ResponseStructure<Restaurant>> deleteRestaurant(@RequestParam String phone){
+	return restaurantService.deleteRestaurant(phone);
 	
 }
+@PatchMapping("/updatestatus{phoneno}")
+public ResponseEntity<ResponseStructure<String>> updateStatus(@RequestParam String phone){
+	return restaurantService.updateStatus(phone);
+	}
 }
