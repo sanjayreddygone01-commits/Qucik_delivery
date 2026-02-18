@@ -46,5 +46,7 @@ public class DeliveryPartnerService {
 		rs.setData(deliveryPartner);
 		
 		return new ResponseEntity<ResponseStructure<DeliveryPartner>>(rs,HttpStatus.FOUND);
+	} 
+}
 		}
 }

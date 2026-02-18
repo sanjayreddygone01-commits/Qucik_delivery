@@ -8,5 +8,10 @@ import com.quickcommerce.thiskostha.entity.DeliveryPartner;
 public interface DeliveryPartnerRepository extends JpaRepository<DeliveryPartner,Long>{
 	DeliveryPartner findByPhone(String phone);
 
+	DeliveryPartner findByPhone(String phone);
+
+	void deleteByPhone(String phone);
+
+}
 	void deleteByPhone(String phone);
 }
