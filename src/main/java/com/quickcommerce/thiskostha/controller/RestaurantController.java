@@ -38,6 +38,10 @@ public ResponseEntity<ResponseStructure<Restaurant>> deleteRestaurant(@RequestPa
 	return restaurantService.deleteRestaurant(phone);
 	
 }
+@PatchMapping("/updatestatus{phoneno}")
+public ResponseEntity<ResponseStructure<String>> updateStatus(@RequestParam String phone){
+	return restaurantService.updateStatus(phone);
+	}
 @PatchMapping("/updateItemAvailability/{phoneno}/{itemid}")
 public ResponseEntity<ResponseStructure<String>> updateItemAvailability(@RequestParam String phone, @RequestParam Long itemid){
 	return restaurantService.updateItemAvailability(phone,itemid);

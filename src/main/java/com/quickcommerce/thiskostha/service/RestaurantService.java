@@ -90,7 +90,21 @@ public class RestaurantService {
 		return new ResponseEntity<ResponseStructure<Restaurant>>(rs,HttpStatus.OK);
 		
 	}
-
+	public ResponseEntity<ResponseStructure<String>> updateStatus(String phone) {
+		Restaurant restaurant=restaurantRepo.findByPhone(phone);
+		if(restaurant.getStatus() == "Open"){
+			restaurant.setStatus("Close");
+		}else {
+			restaurant.setStatus("Open");
+		}
+		
+		ResponseStructure<String> rs = new ResponseStructure<String>();
+		rs.setStatuscode(HttpStatus.OK.value());
+		rs.setMessage("Restaurant Status updated");
+         
+		rs.setData(restaurant.getStatus());
+		return new ResponseEntity<ResponseStructure<String>>(rs,HttpStatus.OK);
+	}
 
 	public ResponseEntity<ResponseStructure<String>> updateItemAvailability(String phone, Long itemid) {
 		Restaurant restaurant =restaurantRepo.findByPhone(phone);
