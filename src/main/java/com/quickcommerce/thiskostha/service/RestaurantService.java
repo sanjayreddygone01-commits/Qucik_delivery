@@ -80,7 +80,7 @@ public class RestaurantService {
 		}
 	
 	
-	public ResponseEntity<ResponseStructure<Restaurant>> deleteCustomer(String phone){
+	public ResponseEntity<ResponseStructure<Restaurant>> deleteRestaurant(String phone){
 		restaurantRepo.deleteByPhone(phone);
 		ResponseStructure<Restaurant> rs = new ResponseStructure<Restaurant>();
 		rs.setStatuscode(HttpStatus.OK.value());

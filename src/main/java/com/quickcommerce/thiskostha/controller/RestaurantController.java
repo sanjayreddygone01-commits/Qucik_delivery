@@ -33,9 +33,9 @@ public ResponseEntity<ResponseStructure<Restaurant>> findrestaurant(@RequestPara
 	
 }
 
-@DeleteMapping("//deletecustomer/{phoneno}")
-public ResponseEntity<ResponseStructure<Restaurant>> deleteCustomer(@RequestParam String phone){
-	return restaurantService.deleteCustomer(phone);
+@DeleteMapping("/deleterestaurant/{phoneno}")
+public ResponseEntity<ResponseStructure<Restaurant>> deleteRestaurant(@RequestParam String phone){
+	return restaurantService.deleteRestaurant(phone);
 	
 }
 @PatchMapping("/updateItemAvailability/{phoneno}/{itemid}")
