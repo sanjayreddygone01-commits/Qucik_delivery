@@ -1,5 +1,7 @@
 package com.quickcommerce.thiskostha.service;
 
+
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import com.quickcommerce.thiskostha.dto.ResponseStructure;
 import com.quickcommerce.thiskostha.dto.RestaurantDTO;
 import com.quickcommerce.thiskostha.entity.Address;
 import com.quickcommerce.thiskostha.entity.Customer;
+import com.quickcommerce.thiskostha.entity.Item;
 import com.quickcommerce.thiskostha.entity.Restaurant;
 import com.quickcommerce.thiskostha.repository.RestaurantRepository;
 
@@ -89,20 +92,20 @@ public class RestaurantService {
 	}
 
 
-
-	public ResponseEntity<ResponseStructure<String>> updateStatus(String phone) {
-		Restaurant restaurant=restaurantRepo.findByPhone(phone);
-		if(restaurant.getStatus() == "Open"){
-			restaurant.setStatus("Close");
-		}else {
-			restaurant.setStatus("Open");
+	public ResponseEntity<ResponseStructure<String>> updateItemAvailability(String phone, Long itemid) {
+		Restaurant restaurant =restaurantRepo.findByPhone(phone);
+		List<Item> listItem = restaurant.getMenuItems();
+		for (Item item : listItem) {
+			if(item.getId()==itemid) {
+				item.setAvailability("Available");
+			}
 		}
-		
+		restaurantRepo.save(restaurant);
 		ResponseStructure<String> rs = new ResponseStructure<String>();
 		rs.setStatuscode(HttpStatus.OK.value());
-		rs.setMessage("Restaurant Status updated");
+		rs.setMessage("Updated Availability Successfully");
          
-		rs.setData(restaurant.getStatus());
+		rs.setData("Updated Availability"+itemid);
 		return new ResponseEntity<ResponseStructure<String>>(rs,HttpStatus.OK);
 	}
 
