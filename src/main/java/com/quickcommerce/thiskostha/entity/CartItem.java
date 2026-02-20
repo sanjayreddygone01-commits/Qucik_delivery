@@ -4,27 +4,24 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 
 @Entity
 public class CartItem {
 	 @Id
 	    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	    private Long id;
-	 @OneToMany
+	 @OneToOne
 	 private Item item;
 	 private int quantity;
-	 @ManyToMany
-	 @JoinColumn(name = "customer_id")
-	 private Customer customer;
+	
 	 public CartItem(Long id, Item item, int quantity, Customer customer) {
 		super();
 		this.id = id;
 		this.item = item;
 		this.quantity = quantity;
-		this.customer = customer;
+		
 	 }
 	 public CartItem() {
 		super();
@@ -48,11 +45,5 @@ public class CartItem {
 	 public void setQuantity(int quantity) {
 		 this.quantity = quantity;
 	 }
-	 public Customer getCustomer() {
-		 return customer;
-	 }
-	 public void setCustomer(Customer customer) {
-		 this.customer = customer;
-	 }
-
+	 
 }

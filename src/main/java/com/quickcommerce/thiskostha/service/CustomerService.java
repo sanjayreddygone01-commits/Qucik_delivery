@@ -71,7 +71,7 @@ public class CustomerService {
 	    CartItem cartItem = new CartItem();
 	    cartItem.setItem(item);
 	    cartItem.setQuantity(quantity);
-	    cartItem.setCustomer(customer);
+	    
 
 	    cartItemRepository.save(cartItem);
 
