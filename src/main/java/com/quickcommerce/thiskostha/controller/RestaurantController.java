@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.quickcommerce.thiskostha.dto.ResponseStructure;
 import com.quickcommerce.thiskostha.dto.RestaurantDTO;
+import com.quickcommerce.thiskostha.entity.Item;
 import com.quickcommerce.thiskostha.entity.Restaurant;
 import com.quickcommerce.thiskostha.service.RestaurantService;
 
@@ -45,5 +46,9 @@ public ResponseEntity<ResponseStructure<String>> updateStatus(@RequestParam Stri
 @PatchMapping("/updateItemAvailability/{phoneno}/{itemid}")
 public ResponseEntity<ResponseStructure<String>> updateItemAvailability(@RequestParam String phone, @RequestParam Long itemid){
 	return restaurantService.updateItemAvailability(phone,itemid);
+}
+@PatchMapping("/additemtomenu/{phone}")
+public ResponseEntity<ResponseStructure<Item>> addItemToMenu(@RequestBody Item item, @RequestParam String phone) {
+	return restaurantService.addItemToMenu(item, phone);
 }
 }

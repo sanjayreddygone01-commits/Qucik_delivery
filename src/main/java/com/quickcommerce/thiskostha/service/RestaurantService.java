@@ -1,6 +1,7 @@
 package com.quickcommerce.thiskostha.service;
 
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -121,6 +122,31 @@ public class RestaurantService {
          
 		rs.setData("Updated Availability"+itemid);
 		return new ResponseEntity<ResponseStructure<String>>(rs,HttpStatus.OK);
+	}
+	
+	public ResponseEntity<ResponseStructure<Item>> addItemToMenu(Item item, String phone) {
+		Restaurant restaurant = restaurantRepo.findByPhone(phone);
+		Item saveItem = new Item();
+		saveItem.setName(item.getName());
+		saveItem.setAvailability(item.getAvailability());
+		saveItem.setDescription(item.getDescription());
+		saveItem.setPrice(item.getPrice());
+		saveItem.setType(item.getType());
+		saveItem.setRating(item.getRating());
+		saveItem.setNumberOfReviews(item.getNumberOfReviews());
+		saveItem.setRestaurant(restaurant);
+		if(restaurant.getMenuItems()==null) {
+			restaurant.setMenuItems(Arrays.asList(saveItem));
+		}else {
+			restaurant.getMenuItems().add(saveItem);		}
+		restaurantRepo.save(restaurant);
+		ResponseStructure<Item> rs = new ResponseStructure<Item>();
+		rs.setStatuscode(HttpStatus.OK.value());
+		rs.setMessage("Added Item Successfully");
+         
+		rs.setData(saveItem);
+		return new ResponseEntity<ResponseStructure<Item>>(rs,HttpStatus.OK);
+		
 	}
 
 }
