@@ -14,7 +14,6 @@ import org.springframework.web.client.RestTemplate;
 import com.quickcommerce.thiskostha.dto.ResponseStructure;
 import com.quickcommerce.thiskostha.dto.RestaurantDTO;
 import com.quickcommerce.thiskostha.entity.Address;
-import com.quickcommerce.thiskostha.entity.Customer;
 import com.quickcommerce.thiskostha.entity.Item;
 import com.quickcommerce.thiskostha.entity.Restaurant;
 import com.quickcommerce.thiskostha.repository.RestaurantRepository;
@@ -123,7 +122,7 @@ public class RestaurantService {
 		rs.setData("Updated Availability"+itemid);
 		return new ResponseEntity<ResponseStructure<String>>(rs,HttpStatus.OK);
 	}
-	
+
 	public ResponseEntity<ResponseStructure<Item>> addItemToMenu(Item item, String phone) {
 		Restaurant restaurant = restaurantRepo.findByPhone(phone);
 		Item saveItem = new Item();
@@ -148,5 +147,7 @@ public class RestaurantService {
 		return new ResponseEntity<ResponseStructure<Item>>(rs,HttpStatus.OK);
 		
 	}
+
+	
 
 }
