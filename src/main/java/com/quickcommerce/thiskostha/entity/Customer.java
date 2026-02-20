@@ -30,12 +30,12 @@ public class Customer {
         joinColumns = @JoinColumn(name = "customer_id"),
         inverseJoinColumns = @JoinColumn(name = "item_id")
     )
-    private List<Item> cartItems;
+    private List<CartItem> cart;
 
     public Customer() {}
 
 	public Customer(Long id, @NotBlank String name, @NotBlank String phone, @Email String email, String gender,
-			List<Address> addresses, List<Order> orders, List<Item> cartItems) {
+			List<Address> addresses, List<Order> orders, List<CartItem> cart) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -44,7 +44,7 @@ public class Customer {
 		this.gender = gender;
 		this.addresses = addresses;
 		this.orders = orders;
-		this.cartItems = cartItems;
+		this.cart = cart;
 	}
 
 	public Long getId() {
@@ -103,12 +103,14 @@ public class Customer {
 		this.orders = orders;
 	}
 
-	public List<Item> getCartItems() {
-		return cartItems;
+	public List<CartItem> getCart() {
+		return cart;
 	}
 
-	public void setCartItems(List<Item> cartItems) {
-		this.cartItems = cartItems;
+	public void setCart(List<CartItem> cart) {
+		this.cart = cart;
 	}
+
+	
    
 }

@@ -7,13 +7,21 @@ import org.springframework.stereotype.Service;
 
 import com.quickcommerce.thiskostha.dto.CustomerDTO;
 import com.quickcommerce.thiskostha.dto.ResponseStructure;
+import com.quickcommerce.thiskostha.entity.CartItem;
 import com.quickcommerce.thiskostha.entity.Customer;
+import com.quickcommerce.thiskostha.entity.Item;
+import com.quickcommerce.thiskostha.repository.CartItemRepository;
 import com.quickcommerce.thiskostha.repository.CustomerRepository;
+import com.quickcommerce.thiskostha.repository.ItemRepository;
 
 @Service
 public class CustomerService {
 	@Autowired
 	private CustomerRepository customerRepo;
+	@Autowired
+	private ItemRepository itemRepository;
+	@Autowired
+	private CartItemRepository cartItemRepository;
 
 	public ResponseEntity<ResponseStructure<Customer>> register(CustomerDTO customerdto) {
 		Customer customer =new Customer();
@@ -51,6 +59,31 @@ public class CustomerService {
 		rs.setData(null);
 		
 		return new ResponseEntity<ResponseStructure<Customer>>(rs,HttpStatus.OK);
+	}
+
+	public ResponseEntity<ResponseStructure<CartItem>> addtocart(String phone, Long itemId,int quantity) {
+
+	    Customer customer = customerRepo.findByPhone(phone);
+	            
+	    Item item = itemRepository.findById(itemId)
+	            .orElseThrow(() -> new RuntimeException("Item not found"));
+
+	    CartItem cartItem = new CartItem();
+	    cartItem.setItem(item);
+	    cartItem.setQuantity(quantity);
+	    cartItem.setCustomer(customer);
+
+	    cartItemRepository.save(cartItem);
+
+	    customer.getCart().add(cartItem);
+	    customerRepo.save(customer);
+
+	    ResponseStructure<CartItem> response = new ResponseStructure<>();
+	    response.setStatuscode(HttpStatus.ACCEPTED.value());
+	    response.setMessage("Item added to cart");
+	    response.setData(cartItem);
+
+	    return ResponseEntity.ok(response);
 	}
 	
 	
