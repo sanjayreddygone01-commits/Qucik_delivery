@@ -24,31 +24,33 @@ public class CustomerService {
 	private CartItemRepository cartItemRepository;
 
 	public ResponseEntity<ResponseStructure<Customer>> register(CustomerDTO customerdto) {
-		Customer customer =new Customer();
+		Customer customer = new Customer();
 		customer.setName(customerdto.getName());
 		customer.setPhone(customerdto.getPhone());
 		customer.setEmail(customerdto.getEmail());
 		customer.setGender(customerdto.getGender());
-		
+
 		customerRepo.save(customer);
 		ResponseStructure<Customer> rs = new ResponseStructure<Customer>();
 		rs.setStatuscode(HttpStatus.CREATED.value());
 		rs.setMessage("customer saved successfully");
 		rs.setData(customer);
-		
-		return new ResponseEntity<ResponseStructure<Customer>>(rs,HttpStatus.CREATED);
-		
+
+		return new ResponseEntity<ResponseStructure<Customer>>(rs, HttpStatus.CREATED);
+
 	}
 
 	public ResponseEntity<ResponseStructure<Customer>> findCustomer(String phone) {
-		Customer customer =customerRepo.findByPhone(phone);
-		if(customer==null) {throw new RuntimeException();}
+		Customer customer = customerRepo.findByPhone(phone);
+		if (customer == null) {
+			throw new RuntimeException();
+		}
 		ResponseStructure<Customer> rs = new ResponseStructure<Customer>();
 		rs.setStatuscode(HttpStatus.FOUND.value());
 		rs.setMessage("customer fteched successfully");
 		rs.setData(customer);
-		
-		return new ResponseEntity<ResponseStructure<Customer>>(rs,HttpStatus.FOUND);
+
+		return new ResponseEntity<ResponseStructure<Customer>>(rs, HttpStatus.FOUND);
 	}
 
 	public ResponseEntity<ResponseStructure<Customer>> deleteCustomer(String phone) {
@@ -57,8 +59,8 @@ public class CustomerService {
 		rs.setStatuscode(HttpStatus.OK.value());
 		rs.setMessage("customer deleted successfully");
 		rs.setData(null);
-		
-		return new ResponseEntity<ResponseStructure<Customer>>(rs,HttpStatus.OK);
+
+		return new ResponseEntity<ResponseStructure<Customer>>(rs, HttpStatus.OK);
 	}
 
 	public ResponseEntity<ResponseStructure<CartItem>> addtocart(String phone, Long itemId,int quantity) {
@@ -74,7 +76,11 @@ public class CustomerService {
 	    
 
 	    cartItemRepository.save(cartItem);
-
+	    
+	    if(item.getRestaurant().getId()!= customer.getCart().get(0).getItem().getRestaurant().getId()) {
+	    	throw new RuntimeException("not from same restaurant");
+	    }
+	    
 	    customer.getCart().add(cartItem);
 	    customerRepo.save(customer);
 
@@ -85,8 +91,5 @@ public class CustomerService {
 
 	    return ResponseEntity.ok(response);
 	}
-	
-	
-	
 
 }

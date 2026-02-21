@@ -14,14 +14,18 @@ import org.springframework.web.client.RestTemplate;
 import com.quickcommerce.thiskostha.dto.ResponseStructure;
 import com.quickcommerce.thiskostha.dto.RestaurantDTO;
 import com.quickcommerce.thiskostha.entity.Address;
+import com.quickcommerce.thiskostha.entity.Customer;
 import com.quickcommerce.thiskostha.entity.Item;
 import com.quickcommerce.thiskostha.entity.Restaurant;
+import com.quickcommerce.thiskostha.repository.CustomerRepository;
 import com.quickcommerce.thiskostha.repository.RestaurantRepository;
 
 @Service
 public class RestaurantService {
 	@Autowired
 	private  RestaurantRepository restaurantRepo;
+	
+	private CustomerRepository customerRepo;
 	@Autowired
 	private RestTemplate restTemplate;
 	
@@ -148,6 +152,16 @@ public class RestaurantService {
 		
 	}
 
-	
+
+
+	public List<Restaurant> SearchItemOrRestaurant(String phone, String searchKey) {
+		Customer customer=customerRepo.findByPhone(phone);
+		if(customer==null) {
+			throw new RuntimeException("Customer Not Found");
+		}
+		String city=customer.getAddresses().get(0).getCity();
+		List<Restaurant> restaurants=restaurantRepo.findByAddress_City(city);
+		return restaurants.stream().filter((Restaurant r) -> r.getMenuItems().stream().anyMatch(menu -> menu.getName().toLowerCase().contains(searchKey.toLowerCase()))).toList();
+	}
 
 }
