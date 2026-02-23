@@ -25,7 +25,9 @@ public class RestaurantService {
 	@Autowired
 	private  RestaurantRepository restaurantRepo;
 	
+	@Autowired
 	private CustomerRepository customerRepo;
+	
 	@Autowired
 	private RestTemplate restTemplate;
 	
@@ -71,7 +73,7 @@ public class RestaurantService {
 
 	
 
-	public ResponseEntity<ResponseStructure<Restaurant>> findrestaurant(String phone) {
+	public ResponseEntity<ResponseStructure<Restaurant>> findRestaurant(String phone) {
 		
 		Restaurant restaurant =restaurantRepo.findByPhone(phone);
 		if(restaurant==null) {throw new RuntimeException();}
@@ -151,7 +153,6 @@ public class RestaurantService {
 		return new ResponseEntity<ResponseStructure<Item>>(rs,HttpStatus.OK);
 		
 	}
-
 
 
 	public List<Restaurant> SearchItemOrRestaurant(String phone, String searchKey) {
