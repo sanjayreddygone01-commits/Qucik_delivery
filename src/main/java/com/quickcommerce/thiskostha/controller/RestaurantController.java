@@ -30,7 +30,7 @@ public ResponseEntity<ResponseStructure<Restaurant>> register (@RequestBody Rest
 
 @GetMapping("/findrestaurant/{phoneno}")
 public ResponseEntity<ResponseStructure<Restaurant>> findrestaurant(@RequestParam String phone){
-	return restaurantService.findrestaurant(phone);
+	return restaurantService.findRestaurant(phone);
 	
 }
 
