@@ -1,0 +1,50 @@
+[33mf40870e[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mbabu[m[33m, [m[1;31morigin/babu[m[33m)[m Added items to restaurant
+[33m6d3d1a6[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m Merge pull request #17 from sanjayreddygone01-commits/saikrishna
+[33maf6d365[m removed duplicate methods in repo
+[33mfb46c0b[m[33m ([m[1;31morigin/saikrishna[m[33m)[m  2 endpoints
+[33mbf04c3d[m Merge pull request #16 from sanjayreddygone01-commits/saikiran
+[33m545c167[m[33m ([m[1;31morigin/saikiran[m[33m)[m ok1
+[33mced608a[m Merge pull request #15 from sanjayreddygone01-commits/saikrishna
+[33me05ecf9[m Merge branch 'main' into saikrishna
+[33md8a2ee1[m Done 2 endpoints
+[33mc78b168[m Merge pull request #14 from sanjayreddygone01-commits/saikiran
+[33m59f2444[m added end points
+[33m36b01f7[m Merge pull request #13 from sanjayreddygone01-commits/saikiran
+[33mf6054d3[m Merge branch 'main' into saikiran
+[33m4b7e44d[m[33m ([m[1;31morigin/mahesh[m[33m)[m changed some of mappings
+[33m875b757[m changes address class
+[33mf16cde1[m operations
+[33m98e6f26[m nothing
+[33m6597ad6[m Done with find and delete operations
+[33ma9be68c[m created endpoint for find and delete customer
+[33m37bbbbd[m Merge pull request #11 from sanjayreddygone01-commits/saikrishna
+[33m4494247[m service modified
+[33md7aa335[m Merge pull request #10 from sanjayreddygone01-commits/saikrishna
+[33m055d8c1[m controller service added
+[33m0b8eaf7[m Merge pull request #9 from sanjayreddygone01-commits/saikiran
+[33m138f2d8[m created DP con,ser
+[33m0af67e3[m Merge pull request #8 from sanjayreddygone01-commits/saikrishna
+[33m69f0989[m Done with RestaurantService and RestaurantController
+[33m7eac162[m added properties and responsestructure
+[33m1e8db68[m completed dto's
+[33m02653f4[m added properties files
+[33m86f81b7[m Merge pull request #7 from sanjayreddygone01-commits/saikrishna
+[33ma4f25e9[m Merge pull request #6 from sanjayreddygone01-commits/saikiran
+[33m571aaef[m created DPDTO
+[33medfaf08[m created restaurantDTO
+[33mfe1758c[m changed repos
+[33m9eeeaf0[m repositries changed
+[33mb43a4db[m Merge pull request #5 from sanjayreddygone01-commits/saikrishna
+[33m9acb117[m name modified
+[33md266994[m Merge pull request #4 from sanjayreddygone01-commits/saikrishna
+[33m3893884[m added to branch
+[33m57cc6f5[m Merge pull request #3 from sanjayreddygone01-commits/saikiran
+[33mce14eaf[m 2
+[33mf8d1c9c[m vechile deleted
+[33m843e985[m Merge pull request #2 from sanjayreddygone01-commits/saikrishna
+[33m8c00bdf[m Merge pull request #1 from sanjayreddygone01-commits/saikiran
+[33m51ab493[m entities created
+[33m34f00b3[m entities created
+[33m0408857[m added order deliverpartner customer
+[33mc8e2652[m packages created
+[33m384b783[m project created

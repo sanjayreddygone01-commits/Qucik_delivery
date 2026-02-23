@@ -19,8 +19,10 @@ import com.quickcommerce.thiskostha.dto.CustomerDTO;
 import com.quickcommerce.thiskostha.dto.ResponseStructure;
 import com.quickcommerce.thiskostha.entity.CartItem;
 import com.quickcommerce.thiskostha.entity.Customer;
+import com.quickcommerce.thiskostha.entity.Order;
 import com.quickcommerce.thiskostha.entity.Restaurant;
 import com.quickcommerce.thiskostha.service.CustomerService;
+import com.quickcommerce.thiskostha.service.OrderService;
 import com.quickcommerce.thiskostha.service.RestaurantService;
 
 @RestController
@@ -28,6 +30,8 @@ import com.quickcommerce.thiskostha.service.RestaurantService;
 public class CustomerController {
 	@Autowired
 	private CustomerService customerService;
+	@Autowired
+	private OrderService orderService;
      
 	@Autowired
 	private RestaurantService restaurantService;
@@ -64,5 +68,18 @@ public class CustomerController {
 		return new ResponseEntity<>(result, HttpStatus.FOUND);
 		
 	}
+	@GetMapping("/customer/getcart/{phone}")
+	public ResponseEntity<ResponseStructure<List<CartItem>>> getCart(@PathVariable String phone) {
+		return customerService.getCart(phone);
+	}
+	@PostMapping("/placeorder")
+    public ResponseEntity<ResponseStructure<Order>> placeOrder(
+            @RequestParam String phone,
+            @RequestParam String method,
+            @RequestParam String addressType) {
+
+        return orderService.placeOrder(phone, method, addressType);
+    }
+	
 
 }
