@@ -1,5 +1,7 @@
 package com.quickcommerce.thiskostha.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -90,6 +92,24 @@ public class CustomerService {
 	    response.setData(cartItem);
 
 	    return ResponseEntity.ok(response);
+	}
+
+	public ResponseEntity<ResponseStructure<List<CartItem>>> getCart(String phone) {
+
+	    Customer customer = customerRepo.findByPhone(phone);
+
+	    if (customer == null) {
+	        throw new RuntimeException("Customer not found");
+	    }
+
+	    List<CartItem> cartItems = cartItemRepository.findByCustomer(customer);
+
+	    ResponseStructure<List<CartItem>> response = new ResponseStructure<>();
+	    response.setStatuscode(HttpStatus.OK.value());
+	    response.setMessage("Cart fetched successfully");
+	    response.setData(cartItems);
+
+	    return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
 }

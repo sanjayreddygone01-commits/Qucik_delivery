@@ -1,8 +1,11 @@
 package com.quickcommerce.thiskostha.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import com.quickcommerce.thiskostha.entity.CartItem;
 import com.quickcommerce.thiskostha.entity.Customer;
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
@@ -10,5 +13,6 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
 	Customer findByPhone(String phone);
 
 	void deleteByPhone(String phone);
+	
 
 }

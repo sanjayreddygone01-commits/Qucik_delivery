@@ -36,7 +36,7 @@ public class Order {
         joinColumns = @JoinColumn(name="order_id"),
         inverseJoinColumns = @JoinColumn(name="item_id")
     )
-    private List<Item> items;
+    private List<CartItem> items;
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
@@ -50,8 +50,8 @@ public class Order {
     private Payment payment;
 
 	public Order(Long id, String status, Double cost, String paymentStatus, LocalDateTime orderTime,
-			String deliveryStatus, Restaurant restaurant, Customer customer, DeliveryPartner deliveryPartner,
-			Payment payment) {
+			String deliveryStatus, Restaurant restaurant, Address pickupAddress, Address deliveryAddress,
+			List<CartItem> items, Customer customer, DeliveryPartner deliveryPartner, Payment payment) {
 		super();
 		this.id = id;
 		this.status = status;
@@ -60,6 +60,9 @@ public class Order {
 		this.orderTime = orderTime;
 		this.deliveryStatus = deliveryStatus;
 		this.restaurant = restaurant;
+		this.pickupAddress = pickupAddress;
+		this.deliveryAddress = deliveryAddress;
+		this.items = items;
 		this.customer = customer;
 		this.deliveryPartner = deliveryPartner;
 		this.payment = payment;
@@ -126,6 +129,30 @@ public class Order {
 		this.restaurant = restaurant;
 	}
 
+	public Address getPickupAddress() {
+		return pickupAddress;
+	}
+
+	public void setPickupAddress(Address pickupAddress) {
+		this.pickupAddress = pickupAddress;
+	}
+
+	public Address getDeliveryAddress() {
+		return deliveryAddress;
+	}
+
+	public void setDeliveryAddress(Address deliveryAddress) {
+		this.deliveryAddress = deliveryAddress;
+	}
+
+	public List<CartItem> getItems() {
+		return items;
+	}
+
+	public void setItems(List<CartItem> items) {
+		this.items = items;
+	}
+
 	public Customer getCustomer() {
 		return customer;
 	}
@@ -149,5 +176,7 @@ public class Order {
 	public void setPayment(Payment payment) {
 		this.payment = payment;
 	}
+
+	
 
 }
