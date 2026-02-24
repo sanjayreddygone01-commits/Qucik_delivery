@@ -76,9 +76,11 @@ public class CustomerController {
     public ResponseEntity<ResponseStructure<Order>> placeOrder(
             @RequestParam String phone,
             @RequestParam String method,
-            @RequestParam String addressType) {
+            @RequestParam String addressType, 
+            @RequestParam String deliveryInstructions,
+            @RequestParam String specialInstructions) {
 
-        return orderService.placeOrder(phone, method, addressType);
+        return orderService.placeOrder(phone, method, addressType,deliveryInstructions,specialInstructions);
     }
 	
 
