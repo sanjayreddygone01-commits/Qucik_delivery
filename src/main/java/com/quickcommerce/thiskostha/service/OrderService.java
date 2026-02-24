@@ -21,7 +21,7 @@ public class OrderService {
 	@Autowired
 	private CustomerRepository customerRepo;
 	@Autowired
-	private OrderRepository oderRepo;
+	private OrderRepository orderRepo;
 
 	public ResponseEntity<ResponseStructure<Order>> placeOrder(String phone, String method, String addressType) {
 		// TODO Auto-generated method stub
@@ -61,6 +61,8 @@ public class OrderService {
     	   }
        }
        order.setDeliveryAddress(deliveryAddress);
+       
+       orderRepo.save(order);
         
 
         // payment status

@@ -139,10 +139,5 @@ public class Restaurant {
 		this.address = address;
 	}
 
-
-
-
-	
-
     
 }
