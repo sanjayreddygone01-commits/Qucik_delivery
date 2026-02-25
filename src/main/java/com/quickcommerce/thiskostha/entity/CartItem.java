@@ -4,8 +4,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 
 @Entity
@@ -16,14 +14,13 @@ public class CartItem {
 	 @OneToOne
 	 private Item item;
 	 private int quantity;
-	 @ManyToMany
-	 private Restaurant restaurant;
-	public CartItem(Long id, Item item, int quantity, Restaurant restaurant) {
+
+	public CartItem(Long id, Item item, int quantity) {
 		super();
 		this.id = id;
 		this.item = item;
 		this.quantity = quantity;
-		this.restaurant = restaurant;
+
 	}
 	public CartItem() {
 		super();
@@ -47,12 +44,7 @@ public class CartItem {
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
-	public Restaurant getRestaurant() {
-		return restaurant;
-	}
-	public void setRestaurant(Restaurant restaurant) {
-		this.restaurant = restaurant;
-	}
+
 	
 	 
 }

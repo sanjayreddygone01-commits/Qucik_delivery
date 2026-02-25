@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.quickcommerce.thiskostha.dto.CustomerAddressDTO;
 import com.quickcommerce.thiskostha.dto.CustomerDTO;
 import com.quickcommerce.thiskostha.dto.ResponseStructure;
+import com.quickcommerce.thiskostha.entity.Address;
 import com.quickcommerce.thiskostha.entity.CartItem;
 import com.quickcommerce.thiskostha.entity.Customer;
 import com.quickcommerce.thiskostha.entity.Order;
@@ -48,9 +50,15 @@ public class CustomerController {
 
 	}
 
-	@DeleteMapping("/deletecustomer/{phoneno}")
+	@DeleteMapping("/deletecustomer/{phone}")
 	public ResponseEntity<ResponseStructure<Customer>> deleteCustomer(@PathVariable String phone) {
 		return customerService.deleteCustomer(phone);
+
+	}
+	
+	@PatchMapping("/addAddress")
+	public ResponseEntity<ResponseStructure<Address>> addAddrress(@PathVariable String phone,@RequestBody CustomerAddressDTO address ) {
+		return customerService.addAddress(phone,address);
 
 	}
 
@@ -61,17 +69,19 @@ public class CustomerController {
 
 	}
 	
-	@PostMapping("/customer/SearchItemOrRestaurant")
+	@GetMapping("/SearchItemOrRestaurant")
 	public ResponseEntity<List<Restaurant>> SearchItemOrRestaurant(@RequestParam String phone, @RequestParam String SearchKey ){
 		
 		List<Restaurant> result= restaurantService.SearchItemOrRestaurant(phone,SearchKey);
 		return new ResponseEntity<>(result, HttpStatus.FOUND);
 		
 	}
-	@GetMapping("/customer/getcart/{phone}")
+	@GetMapping("/getcart/{phone}")
 	public ResponseEntity<ResponseStructure<List<CartItem>>> getCart(@PathVariable String phone) {
 		return customerService.getCart(phone);
 	}
+	
+	
 	@PostMapping("/placeorder")
     public ResponseEntity<ResponseStructure<Order>> placeOrder(
             @RequestParam String phone,

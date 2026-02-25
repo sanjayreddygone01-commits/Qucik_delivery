@@ -20,7 +20,8 @@ public class Order {
     private Integer otp;
     private String deliveryInstructions;
     private String specialinstructions;
-    private Double deliveryCharges; 
+    private Double deliveryCharges;
+    private LocalDateTime deliveryTime;
     @ManyToOne
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
@@ -52,10 +53,12 @@ public class Order {
     @OneToOne(mappedBy="order",cascade = CascadeType.ALL)
     private Payment payment;
 
+	
 	public Order(Long id, String status, Double cost, String paymentStatus, LocalDateTime orderTime,
 			String deliveryStatus, Integer otp, String deliveryInstructions, String specialinstructions,
-			Double deliveryCharges, Restaurant restaurant, Address pickupAddress, Address deliveryAddress,
-			List<CartItem> items, Customer customer, DeliveryPartner deliveryPartner, Payment payment) {
+			Double deliveryCharges, LocalDateTime deliveryTime, Restaurant restaurant, Address pickupAddress,
+			Address deliveryAddress, List<CartItem> items, Customer customer, DeliveryPartner deliveryPartner,
+			Payment payment) {
 		super();
 		this.id = id;
 		this.status = status;
@@ -67,6 +70,7 @@ public class Order {
 		this.deliveryInstructions = deliveryInstructions;
 		this.specialinstructions = specialinstructions;
 		this.deliveryCharges = deliveryCharges;
+		this.deliveryTime = deliveryTime;
 		this.restaurant = restaurant;
 		this.pickupAddress = pickupAddress;
 		this.deliveryAddress = deliveryAddress;
@@ -215,6 +219,14 @@ public class Order {
 
 	public void setPayment(Payment payment) {
 		this.payment = payment;
+	}
+
+	public LocalDateTime getDeliverTime() {
+		return deliveryTime;
+	}
+
+	public void setDeliverTime(LocalDateTime deliverTime) {
+		this.deliveryTime = deliverTime;
 	}
 
 	

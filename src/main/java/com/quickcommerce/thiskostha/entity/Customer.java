@@ -17,8 +17,8 @@ public class Customer {
     @NotBlank private String phone;
     @Email private String email;
     private String gender;
-
-    @OneToMany(mappedBy="customer",cascade = CascadeType.ALL, orphanRemoval = true)
+//    mappedBy="customer",
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Address> addresses;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
