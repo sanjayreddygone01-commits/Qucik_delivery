@@ -32,52 +32,41 @@ public class CustomerController {
 	@Autowired
 	private OrderService orderService;
      
-//	@Autowired
-//	private RestaurantService restaurantService;
-	
 	@PostMapping("/register")
 	public ResponseEntity<ResponseStructure<Customer>> register(@RequestBody CustomerDTO customerdto) {
 		return customerService.register(customerdto);
-
 	}
 
 	@GetMapping("/findcustomer/{phoneno}")
 	public ResponseEntity<ResponseStructure<Customer>> findCustomer(@PathVariable String phone) {
 		return customerService.findCustomer(phone);
-
 	}
 
 	@DeleteMapping("/deletecustomer/{phone}")
 	public ResponseEntity<ResponseStructure<Customer>> deleteCustomer(@PathVariable String phone) {
 		return customerService.deleteCustomer(phone);
-
 	}
 	
 	@PatchMapping("/addAddress")
 	public ResponseEntity<ResponseStructure<Address>> addAddrress(@PathVariable String phone,@RequestBody CustomerAddressDTO address ) {
 		return customerService.addAddress(phone,address);
-
 	}
 
 	@PatchMapping("/addtocart/{phone}/{itemId}/{quantity}")
 	public ResponseEntity<ResponseStructure<CartItem>> addtoCart(@PathVariable String phone, @PathVariable Long itemId,
 			@PathVariable int quantity) {
 		return customerService.addtocart(phone, itemId, quantity);
-
 	}
 	
 	@GetMapping("/SearchItemOrRestaurant")
 	public ResponseEntity<ResponseStructure<SearchResponse>> SearchItemOrRestaurant(@RequestParam String phone, @RequestParam String addressType, @RequestParam String SearchKey){
-		
 		return customerService.SearchItemOrRestaurant(phone,addressType,SearchKey);
-	
-		
 	}
+	
 	@GetMapping("/getcart/{phone}")
 	public ResponseEntity<ResponseStructure<CartResponse>> getCart(@PathVariable String phone) {
 		return customerService.getCart(phone);
 	}
-	
 	
 	@PostMapping("/placeorder")
     public ResponseEntity<ResponseStructure<Order>> placeOrder(
@@ -86,9 +75,14 @@ public class CustomerController {
             @RequestParam String addressType, 
             @RequestParam String deliveryInstructions,
             @RequestParam String specialInstructions) {
-
         return orderService.placeOrder(phone, method, addressType,deliveryInstructions,specialInstructions);
     }
 	
-
+	
+	@DeleteMapping("/order/{orderId}/cancel")
+	public ResponseEntity<ResponseStructure<Order>> cancelOrder(
+			@PathVariable Long orderId,
+			@RequestParam String customerPhone) {
+		return orderService.cancelOrder(orderId, customerPhone);
+	}
 }

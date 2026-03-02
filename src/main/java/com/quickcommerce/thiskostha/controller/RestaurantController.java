@@ -29,7 +29,7 @@ public ResponseEntity<ResponseStructure<Restaurant>> register (@RequestBody Rest
 }
 
 @GetMapping("/findrestaurant/{phoneno}")
-public ResponseEntity<ResponseStructure<Restaurant>> findrestaurant(@RequestParam String phone){
+public ResponseEntity<ResponseStructure<Restaurant>> findRestaurant(@RequestParam String phone){
 	return restaurantService.findRestaurant(phone);
 	
 }
