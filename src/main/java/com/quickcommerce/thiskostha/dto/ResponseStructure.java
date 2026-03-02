@@ -36,6 +36,7 @@ public class ResponseStructure <T>{
 	}
 	@Override
 	public String toString() {
-		return "ResponseStructure [statuscode=" + statuscode + ", message=" + message + ", data=" + data + "]";
+		return "ResponseStructure [statuscode=" + statuscode + ", message=" + message + 
+				", data=" + data + "]";
 	}
 }
