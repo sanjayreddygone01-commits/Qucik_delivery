@@ -17,7 +17,7 @@ public class Restaurant {
     @NotBlank private String phone;
     @Email private String email;
     private String description;
-    private int packagefees;
+    private Double packagefees;
     private String Status;
    
 	private String type; 
@@ -27,7 +27,7 @@ public class Restaurant {
 
     @OneToMany(mappedBy="restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Order> orders;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="address_id")
     private Address address;
 
@@ -36,7 +36,7 @@ public class Restaurant {
 	}
 
 	public Restaurant(Long id, @NotBlank String name, @NotBlank String phone, @Email String email, String description,
-			int packagefees, String status, String type, List<Item> menuItems, List<Order> orders, Address address) {
+			Double packagefees, String status, String type, List<Item> menuItems, List<Order> orders, Address address) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -91,11 +91,11 @@ public class Restaurant {
 		this.description = description;
 	}
 
-	public int getPackagefees() {
+	public Double getPackagefees() {
 		return packagefees;
 	}
 
-	public void setPackagefees(int packagefees) {
+	public void setPackagefees(Double packagefees) {
 		this.packagefees = packagefees;
 	}
 
@@ -139,10 +139,6 @@ public class Restaurant {
 		this.address = address;
 	}
 
-
-
-
 	
-
     
 }

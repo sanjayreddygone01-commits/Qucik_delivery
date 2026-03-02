@@ -1,7 +1,6 @@
 package com.quickcommerce.thiskostha.repository;
 
 import java.util.List;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -16,6 +15,9 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
 	void deleteByPhone(String phone);
 
 	List<Restaurant> findByAddress_City(String city);
+
+	List<Restaurant> findByNameContainingIgnoreCase(String searchKey);
+
 
 
 

@@ -7,7 +7,7 @@ public class RestaurantDTO {
 	     private String email;
 	    private LocationCordinates cordinates;
 	    private String description;
-	    private int packagefees;
+	    private Double packagefees;
 	   
 		private String type;
 
@@ -54,12 +54,12 @@ public class RestaurantDTO {
 			this.description = description;
 		}
 
-		public int getPackagefees() {
+		public Double getPackagefees() {
 			return packagefees;
 		}
 
 
-		public void setPackagefees(int packagefees) {
+		public void setPackagefees(Double packagefees) {
 			this.packagefees = packagefees;
 		}
 
@@ -74,7 +74,7 @@ public class RestaurantDTO {
 
 
 public RestaurantDTO(String name, String phone, String email, LocationCordinates cordinates, String description,
-				int packagefees, String type) {
+				Double packagefees, String type) {
 			super();
 			this.name = name;
 			this.phone = phone;

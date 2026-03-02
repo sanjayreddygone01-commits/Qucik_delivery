@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -25,11 +26,15 @@ public class RestaurantService {
 	@Autowired
 	private  RestaurantRepository restaurantRepo;
 	
-	@Autowired
-	private CustomerRepository customerRepo;
+//	@Autowired
+//	private CustomerRepository customerRepo;
 	
 	@Autowired
 	private RestTemplate restTemplate;
+	
+    @Value("${myapp.api.key}")
+    private String apiKey;
+
 	
 	public  ResponseEntity<ResponseStructure<Restaurant>> register(RestaurantDTO restaurantdto) {
 		Restaurant restaurant = new Restaurant();
@@ -40,11 +45,10 @@ public class RestaurantService {
 		restaurant.setPackagefees(restaurantdto.getPackagefees());
 		restaurant.setType(restaurantdto.getType());
 		
-		String url="https://us1.locationiq.com/v1/reverse?key=pk.e13376a26985e3fd5361223a1ed9aabb&lat="+ restaurantdto.getCordinates().getLatitude()+"&lon="
+		String url="https://us1.locationiq.com/v1/reverse?key="+apiKey+"&lat="+ restaurantdto.getCordinates().getLatitude()+"&lon="
 		+restaurantdto.getCordinates().getLongitude()+"&format=json&";
 		
 		Map<String,Object> response=restTemplate.getForObject(url,Map.class);
-		
 		Map<String,Object> addressMap=(Map<String,Object>) response.get("address");
 		
 		Address address=new Address();
@@ -155,14 +159,6 @@ public class RestaurantService {
 	}
 
 
-	public List<Restaurant> SearchItemOrRestaurant(String phone, String searchKey) {
-		Customer customer=customerRepo.findByPhone(phone);
-		if(customer==null) {
-			throw new RuntimeException("Customer Not Found");
-		}
-		String city=customer.getAddresses().get(0).getCity();
-		List<Restaurant> restaurants=restaurantRepo.findByAddress_City(city);
-		return restaurants.stream().filter((Restaurant r) -> r.getMenuItems().stream().anyMatch(menu -> menu.getName().toLowerCase().contains(searchKey.toLowerCase()))).toList();
-	}
+	
 
 }

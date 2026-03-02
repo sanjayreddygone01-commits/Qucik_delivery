@@ -1,9 +1,6 @@
 package com.quickcommerce.thiskostha.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,15 +12,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.quickcommerce.thiskostha.dto.CartResponse;
+import com.quickcommerce.thiskostha.dto.CustomerAddressDTO;
 import com.quickcommerce.thiskostha.dto.CustomerDTO;
 import com.quickcommerce.thiskostha.dto.ResponseStructure;
+import com.quickcommerce.thiskostha.dto.SearchResponse;
+import com.quickcommerce.thiskostha.entity.Address;
 import com.quickcommerce.thiskostha.entity.CartItem;
 import com.quickcommerce.thiskostha.entity.Customer;
 import com.quickcommerce.thiskostha.entity.Order;
-import com.quickcommerce.thiskostha.entity.Restaurant;
 import com.quickcommerce.thiskostha.service.CustomerService;
 import com.quickcommerce.thiskostha.service.OrderService;
-import com.quickcommerce.thiskostha.service.RestaurantService;
 
 @RestController
 @RequestMapping("/customer")
@@ -33,8 +32,8 @@ public class CustomerController {
 	@Autowired
 	private OrderService orderService;
      
-	@Autowired
-	private RestaurantService restaurantService;
+//	@Autowired
+//	private RestaurantService restaurantService;
 	
 	@PostMapping("/register")
 	public ResponseEntity<ResponseStructure<Customer>> register(@RequestBody CustomerDTO customerdto) {
@@ -48,9 +47,15 @@ public class CustomerController {
 
 	}
 
-	@DeleteMapping("/deletecustomer/{phoneno}")
+	@DeleteMapping("/deletecustomer/{phone}")
 	public ResponseEntity<ResponseStructure<Customer>> deleteCustomer(@PathVariable String phone) {
 		return customerService.deleteCustomer(phone);
+
+	}
+	
+	@PatchMapping("/addAddress")
+	public ResponseEntity<ResponseStructure<Address>> addAddrress(@PathVariable String phone,@RequestBody CustomerAddressDTO address ) {
+		return customerService.addAddress(phone,address);
 
 	}
 
@@ -61,24 +66,28 @@ public class CustomerController {
 
 	}
 	
-	@PostMapping("/customer/SearchItemOrRestaurant")
-	public ResponseEntity<List<Restaurant>> SearchItemOrRestaurant(@RequestParam String phone, @RequestParam String SearchKey ){
+	@GetMapping("/SearchItemOrRestaurant")
+	public ResponseEntity<ResponseStructure<SearchResponse>> SearchItemOrRestaurant(@RequestParam String phone, @RequestParam String addressType, @RequestParam String SearchKey){
 		
-		List<Restaurant> result= restaurantService.SearchItemOrRestaurant(phone,SearchKey);
-		return new ResponseEntity<>(result, HttpStatus.FOUND);
+		return customerService.SearchItemOrRestaurant(phone,addressType,SearchKey);
+	
 		
 	}
-	@GetMapping("/customer/getcart/{phone}")
-	public ResponseEntity<ResponseStructure<List<CartItem>>> getCart(@PathVariable String phone) {
+	@GetMapping("/getcart/{phone}")
+	public ResponseEntity<ResponseStructure<CartResponse>> getCart(@PathVariable String phone) {
 		return customerService.getCart(phone);
 	}
+	
+	
 	@PostMapping("/placeorder")
     public ResponseEntity<ResponseStructure<Order>> placeOrder(
             @RequestParam String phone,
             @RequestParam String method,
-            @RequestParam String addressType) {
+            @RequestParam String addressType, 
+            @RequestParam String deliveryInstructions,
+            @RequestParam String specialInstructions) {
 
-        return orderService.placeOrder(phone, method, addressType);
+        return orderService.placeOrder(phone, method, addressType,deliveryInstructions,specialInstructions);
     }
 	
 

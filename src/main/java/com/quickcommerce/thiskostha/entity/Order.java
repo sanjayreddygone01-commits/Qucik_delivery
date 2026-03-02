@@ -11,13 +11,18 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private String status;
     private Double cost;
-    private String paymentStatus;
+    @Enumerated(EnumType.STRING)
+    private PaymentStatus paymentStatus;
     private LocalDateTime orderTime;
-    private String deliveryStatus;
-
+    @Enumerated(EnumType.STRING)
+    private OrderStatus deliveryStatus;
+    private Integer otp;
+    private String deliveryInstructions;
+    private String specialinstructions;
+    private Double deliveryCharges;
+    private LocalDateTime deliveryTime;
+    private Double packagingFee;
     @ManyToOne
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
@@ -30,12 +35,9 @@ public class Order {
     @JoinColumn(name="delivery_address_id")
     private Address deliveryAddress;
 
-    @ManyToMany
-    @JoinTable(
-        name = "order_items",
-        joinColumns = @JoinColumn(name="order_id"),
-        inverseJoinColumns = @JoinColumn(name="item_id")
-    )
+    @OneToMany
+    @JoinColumn(name="order_id")
+ 
     private List<CartItem> items;
 
     @ManyToOne
@@ -49,16 +51,23 @@ public class Order {
     @OneToOne(mappedBy="order",cascade = CascadeType.ALL)
     private Payment payment;
 
-	public Order(Long id, String status, Double cost, String paymentStatus, LocalDateTime orderTime,
-			String deliveryStatus, Restaurant restaurant, Address pickupAddress, Address deliveryAddress,
-			List<CartItem> items, Customer customer, DeliveryPartner deliveryPartner, Payment payment) {
+	public Order(Long id, Double cost, PaymentStatus paymentStatus, LocalDateTime orderTime, OrderStatus deliveryStatus,
+			Integer otp, String deliveryInstructions, String specialinstructions, Double deliveryCharges,
+			LocalDateTime deliveryTime, Double packagingFee, Restaurant restaurant, Address pickupAddress,
+			Address deliveryAddress, List<CartItem> items, Customer customer, DeliveryPartner deliveryPartner,
+			Payment payment) {
 		super();
 		this.id = id;
-		this.status = status;
 		this.cost = cost;
 		this.paymentStatus = paymentStatus;
 		this.orderTime = orderTime;
 		this.deliveryStatus = deliveryStatus;
+		this.otp = otp;
+		this.deliveryInstructions = deliveryInstructions;
+		this.specialinstructions = specialinstructions;
+		this.deliveryCharges = deliveryCharges;
+		this.deliveryTime = deliveryTime;
+		this.packagingFee = packagingFee;
 		this.restaurant = restaurant;
 		this.pickupAddress = pickupAddress;
 		this.deliveryAddress = deliveryAddress;
@@ -81,14 +90,6 @@ public class Order {
 		this.id = id;
 	}
 
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
 	public Double getCost() {
 		return cost;
 	}
@@ -97,11 +98,11 @@ public class Order {
 		this.cost = cost;
 	}
 
-	public String getPaymentStatus() {
+	public PaymentStatus getPaymentStatus() {
 		return paymentStatus;
 	}
 
-	public void setPaymentStatus(String paymentStatus) {
+	public void setPaymentStatus(PaymentStatus paymentStatus) {
 		this.paymentStatus = paymentStatus;
 	}
 
@@ -113,12 +114,60 @@ public class Order {
 		this.orderTime = orderTime;
 	}
 
-	public String getDeliveryStatus() {
+	public OrderStatus getDeliveryStatus() {
 		return deliveryStatus;
 	}
 
-	public void setDeliveryStatus(String deliveryStatus) {
+	public void setDeliveryStatus(OrderStatus deliveryStatus) {
 		this.deliveryStatus = deliveryStatus;
+	}
+
+	public Integer getOtp() {
+		return otp;
+	}
+
+	public void setOtp(Integer otp) {
+		this.otp = otp;
+	}
+
+	public String getDeliveryInstructions() {
+		return deliveryInstructions;
+	}
+
+	public void setDeliveryInstructions(String deliveryInstructions) {
+		this.deliveryInstructions = deliveryInstructions;
+	}
+
+	public String getSpecialinstructions() {
+		return specialinstructions;
+	}
+
+	public void setSpecialinstructions(String specialinstructions) {
+		this.specialinstructions = specialinstructions;
+	}
+
+	public Double getDeliveryCharges() {
+		return deliveryCharges;
+	}
+
+	public void setDeliveryCharges(Double deliveryCharges) {
+		this.deliveryCharges = deliveryCharges;
+	}
+
+	public LocalDateTime getDeliveryTime() {
+		return deliveryTime;
+	}
+
+	public void setDeliveryTime(LocalDateTime deliveryTime) {
+		this.deliveryTime = deliveryTime;
+	}
+
+	public Double getPackagingFee() {
+		return packagingFee;
+	}
+
+	public void setPackagingFee(Double packagingFee) {
+		this.packagingFee = packagingFee;
 	}
 
 	public Restaurant getRestaurant() {
@@ -177,6 +226,8 @@ public class Order {
 		this.payment = payment;
 	}
 
+	
+	
 	
 
 }

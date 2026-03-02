@@ -17,22 +17,15 @@ public class Customer {
     @NotBlank private String phone;
     @Email private String email;
     private String gender;
-
-    @OneToMany(mappedBy="customer",cascade = CascadeType.ALL, orphanRemoval = true)
+//    mappedBy="customer",
+    @OneToMany(mappedBy = "customer",cascade= CascadeType.ALL, orphanRemoval = true)
     private List<Address> addresses;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Order> orders;
 
-    @ManyToMany
-    @JoinTable(
-        name = "customer_cart_items",
-        joinColumns = @JoinColumn(name = "customer_id"),
-        inverseJoinColumns = @JoinColumn(name = "item_id")
-    )
+    @OneToMany(mappedBy = "customer",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<CartItem> cart;
-
-    public Customer() {}
 
 	public Customer(Long id, @NotBlank String name, @NotBlank String phone, @Email String email, String gender,
 			List<Address> addresses, List<Order> orders, List<CartItem> cart) {
@@ -45,6 +38,11 @@ public class Customer {
 		this.addresses = addresses;
 		this.orders = orders;
 		this.cart = cart;
+	}
+
+	public Customer() {
+		super();
+		// TODO Auto-generated constructor stub
 	}
 
 	public Long getId() {
@@ -111,6 +109,5 @@ public class Customer {
 		this.cart = cart;
 	}
 
-	
    
 }
