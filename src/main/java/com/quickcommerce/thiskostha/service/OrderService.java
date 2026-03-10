@@ -210,6 +210,20 @@ public class OrderService {
 	       rs.setStatuscode(200);
 	       return  new ResponseEntity<ResponseStructure<Order>>(rs,HttpStatus.OK);
 	    }
+
+
+//
+//		public ResponseEntity<ResponseStructure<Order>> cancelOrder(String phone, Long orderid) {
+//			 Order order = orderRepo.findById(orderid).orElseThrow(() -> new RuntimeException("Order not found with this id"));
+//		       Customer customer = order.getCustomer();
+//		       if(order.getDeliveryPartner()!=null) {
+//		    	   throw new RuntimeException("order can't be cancelled");
+//		       }
+//		       
+//		       
+//		       
+//		      
+//		}
 	
 	
 

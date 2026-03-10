@@ -18,7 +18,7 @@ public class Restaurant {
     @Email private String email;
     private String description;
     private Double packagefees;
-    private String Status;
+    private String status;
    
 	private String type; 
 
@@ -44,7 +44,7 @@ public class Restaurant {
 		this.email = email;
 		this.description = description;
 		this.packagefees = packagefees;
-		Status = status;
+		this.status = status;
 		this.type = type;
 		this.menuItems = menuItems;
 		this.orders = orders;
@@ -100,11 +100,11 @@ public class Restaurant {
 	}
 
 	public String getStatus() {
-		return Status;
+		return status;
 	}
 
 	public void setStatus(String status) {
-		Status = status;
+		this.status = status;
 	}
 
 	public String getType() {

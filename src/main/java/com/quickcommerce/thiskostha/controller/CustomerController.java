@@ -91,4 +91,10 @@ public class CustomerController {
 	        return orderService.denyPlacingOrder(orderid);
         
 	    }
+	    
+//	    @PatchMapping("/cancelOrder")
+//	    public ResponseEntity<ResponseStructure<Order>> cancelOrder(@RequestParam String phone,@RequestParam Long orderid) {
+//	        return orderService.cancelOrder(phone,orderid);
+//        }
+	    
 }

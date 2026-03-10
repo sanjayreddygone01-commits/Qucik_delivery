@@ -16,6 +16,7 @@ import com.quickcommerce.thiskostha.dto.OrderResponse;
 import com.quickcommerce.thiskostha.dto.ResponseStructure;
 import com.quickcommerce.thiskostha.entity.DeliveryPartner;
 import com.quickcommerce.thiskostha.entity.Order;
+import com.quickcommerce.thiskostha.entity.OrderStatus;
 import com.quickcommerce.thiskostha.repository.DeliveryPartnerRepository;
 import com.quickcommerce.thiskostha.repository.OrderRepository;
 
@@ -97,6 +98,7 @@ private RedisTemplate<String, String> redisTemplate;
 	        else {
 	        throw new RuntimeException("already locked");}
 	    }
+	 
 	 public void getDirections(Long orderid,LocationCordinates cordinates,HttpServletResponse response) {
 		 
 		  Order order = orderRepository.findById(orderid).orElseThrow(() -> new RuntimeException("Order not found"));
@@ -116,6 +118,51 @@ private RedisTemplate<String, String> redisTemplate;
 			e.printStackTrace();
 		}
 	 }
+	 public ResponseEntity<ResponseStructure<String>> statusUpdateTopickedup(Long orderid) {
+		 Order order = orderRepository.findById(orderid).orElseThrow(() -> new RuntimeException("Order not found"));
+		 order.setDeliveryStatus(OrderStatus.PICKEDUP);
+		 orderRepository.save(order);
+		 ResponseStructure<String> rs=new ResponseStructure<String>();
+ 		rs.setStatuscode(HttpStatus.ACCEPTED.value());
+ 		rs.setMessage("accepted order");
+ 		rs.setData("pickedup");
+ 		
+ 		return new ResponseEntity<ResponseStructure<String>>(rs,HttpStatus.ACCEPTED);
+         
+		 
+	 }
+	 public ResponseEntity<ResponseStructure<String>> deliveredOrder(Long orderid, Integer otp) {
+		 Order order = orderRepository.findById(orderid).orElseThrow(() -> new RuntimeException("Order not found"));
+		 if(order.getOtp()==otp) {
+			 order.setDeliveryStatus(OrderStatus.DELIVERED);
+			 ResponseStructure<String> rs=new ResponseStructure<String>();
+		 		rs.setStatuscode(HttpStatus.ACCEPTED.value());
+		 		rs.setMessage("deliverred order");
+		 		rs.setData("delivered");
+		 		
+		 		return new ResponseEntity<ResponseStructure<String>>(rs,HttpStatus.ACCEPTED);
+			
+		 }else {
+			 throw new RuntimeException("invalid otp");
+		 }
+	 }
+	 public void getDirectionstoCustomer(Long orderid, HttpServletResponse response) {
+		 Order order = orderRepository.findById(orderid).orElseThrow(() -> new RuntimeException("Order not found"));
+		 double dplat = order.getRestaurant().getAddress().getLatitude();
+		  double dplongi =  order.getRestaurant().getAddress().getLongitude();
+		  //restaurant cordinates
+		  double restlat = order.getDeliveryAddress().getLatitude();
+	      double restlongi = order.getDeliveryAddress().getLongitude();
+	      String getdir = "https://www.google.com/maps/dir/?api=1&origin=" + dplat + "," + dplongi + "&destination="
+			        + restlat + "," + restlongi + "&travelmode=driving";
+		 try {
+			response.sendRedirect(getdir);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	 }
+	 
 
 		}
 

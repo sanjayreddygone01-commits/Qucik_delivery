@@ -17,6 +17,9 @@ public class Customer {
     @NotBlank private String phone;
     @Email private String email;
     private String gender;
+    private Double wallet;
+    private Double fine;
+    
 //    mappedBy="customer",
     @OneToMany(mappedBy = "customer",cascade= CascadeType.ALL, orphanRemoval = true)
     private List<Address> addresses;
@@ -28,21 +31,18 @@ public class Customer {
     private List<CartItem> cart;
 
 	public Customer(Long id, @NotBlank String name, @NotBlank String phone, @Email String email, String gender,
-			List<Address> addresses, List<Order> orders, List<CartItem> cart) {
+			Double wallet, Double fine, List<Address> addresses, List<Order> orders, List<CartItem> cart) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.phone = phone;
 		this.email = email;
 		this.gender = gender;
+		this.wallet = wallet;
+		this.fine = fine;
 		this.addresses = addresses;
 		this.orders = orders;
 		this.cart = cart;
-	}
-
-	public Customer() {
-		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public Long getId() {
@@ -85,6 +85,22 @@ public class Customer {
 		this.gender = gender;
 	}
 
+	public Double getWallet() {
+		return wallet;
+	}
+
+	public void setWallet(Double wallet) {
+		this.wallet = wallet;
+	}
+
+	public Double getFine() {
+		return fine;
+	}
+
+	public void setFine(Double fine) {
+		this.fine = fine;
+	}
+
 	public List<Address> getAddresses() {
 		return addresses;
 	}
@@ -109,5 +125,11 @@ public class Customer {
 		this.cart = cart;
 	}
 
+	public Customer() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	
    
 }

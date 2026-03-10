@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -61,8 +62,16 @@ import jakarta.servlet.http.HttpServletResponse;
 	    @GetMapping("/getDirectionstoRestaurant")
 	    public void getDirections(@RequestParam Long orderid,@RequestBody LocationCordinates cordinates,HttpServletResponse response) {
 	    	 deliveryPartnerService.getDirections(orderid,cordinates,response);
-
-	        
+	    }
+	    
+	    @PatchMapping("/pickedupOrder")
+	    public ResponseEntity<ResponseStructure<String>> pickupOrder(@RequestParam Long orderid) {
+	    	 return deliveryPartnerService.statusUpdateTopickedup(orderid);
+	    }
+	    
+	    @PatchMapping("/deliveredOrder")
+	    public ResponseEntity<ResponseStructure<String>> dileverdOrder(@RequestParam Long orderid,Integer otp) {
+	    	 return deliveryPartnerService.deliveredOrder(orderid,otp);
 	    }
 	    
 	    
