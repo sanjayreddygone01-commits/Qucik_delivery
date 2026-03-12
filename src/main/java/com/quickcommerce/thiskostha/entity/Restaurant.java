@@ -32,6 +32,8 @@ public class Restaurant {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="address_id")
     private Address address;
+    private Boolean isBlocked = false;      // Restaurant blocked due to high penalties
+    private Double totalPenalties = 0.0; 
 
     public Restaurant() {
 		super();
@@ -39,7 +41,7 @@ public class Restaurant {
 
 	public Restaurant(Long id, @NotBlank String name, @NotBlank String phone, @Email String email, String description,
 			Double packagefees, String status, String type, Double penality, Double wallet, List<Item> menuItems,
-			List<Order> orders, Address address) {
+			List<Order> orders, Address address, Boolean isBlocked, Double totalPenalties) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -56,6 +58,8 @@ public class Restaurant {
 		this.menuItems = menuItems;
 		this.orders = orders;
 		this.address = address;
+		this.isBlocked = isBlocked;
+		this.totalPenalties = totalPenalties;
 	}
 
 	public Long getId() {
@@ -164,5 +168,21 @@ public class Restaurant {
 		this.address = address;
 	}
 
+	public Boolean getIsBlocked() {
+		return isBlocked;
+	}
+
+	public void setIsBlocked(Boolean isBlocked) {
+		this.isBlocked = isBlocked;
+	}
+
+	public Double getTotalPenalties() {
+		return totalPenalties;
+	}
+
+	public void setTotalPenalties(Double totalPenalties) {
+		this.totalPenalties = totalPenalties;
+	}
     
-}
+
+	}

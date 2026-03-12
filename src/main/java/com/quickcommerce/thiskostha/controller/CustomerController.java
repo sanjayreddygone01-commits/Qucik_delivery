@@ -92,9 +92,18 @@ public class CustomerController {
         
 	    }
 	    
-//	    @PatchMapping("/cancelOrder")
-//	    public ResponseEntity<ResponseStructure<Order>> cancelOrder(@RequestParam String phone,@RequestParam Long orderid) {
-//	        return orderService.cancelOrder(phone,orderid);
-//        }
+        @PostMapping("/cancelOrder")
+	    public ResponseEntity<ResponseStructure<Order>> cancelOrder(@RequestParam String phone, @RequestParam Long orderId, @RequestParam String reason) {
+	    	return  customerService.cancelOrder(phone, orderId, reason);
+	        
+	    }
+	    
+	    @PostMapping("/placeorderWithCoupon")
+	    public ResponseEntity<ResponseStructure<Order>> placeOrderWithCoupon(
+	        @RequestParam Long orderId,
+	        @RequestParam Integer couponId) {
+	    	
+	    	return orderService.placeOrderWithCoupon(orderId,couponId);
+	    }
 	    
 }

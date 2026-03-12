@@ -212,18 +212,35 @@ public class OrderService {
 	    }
 
 
-//
-//		public ResponseEntity<ResponseStructure<Order>> cancelOrder(String phone, Long orderid) {
-//			 Order order = orderRepo.findById(orderid).orElseThrow(() -> new RuntimeException("Order not found with this id"));
-//		       Customer customer = order.getCustomer();
-//		       if(order.getDeliveryPartner()!=null) {
-//		    	   throw new RuntimeException("order can't be cancelled");
-//		       }
-//		       
-//		       
-//		       
-//		      
-//		}
+	    @Autowired
+	    private CouponRedemptionService couponRedemptionService;
+
+	    
+	    public ResponseEntity<ResponseStructure<Order>> placeOrderWithCoupon(
+	        Long orderId,
+	         Integer couponId) {
+	        
+	        if (couponId != null) {
+	            // Apply coupon and get discount
+	            ResponseEntity<ResponseStructure<Double>> discountResponse = 
+	                couponRedemptionService.redeemCoupon(couponId, orderId);
+	            
+	            if (discountResponse.getStatusCode() == HttpStatus.OK) {
+	                Double discountAmount = discountResponse.getBody().getData();
+	                // Order is already updated with discounted amount
+	                Order order = orderRepo.findById(orderId).get();
+	                // Proceed with payment on the discounted amount
+	            }
+	        }
+	        
+	        Order finalOrder = orderRepo.findById(orderId).get();
+	        ResponseStructure<Order> rs = new ResponseStructure<>();
+	        rs.setStatuscode(HttpStatus.OK.value());
+	        rs.setMessage("Order placed with discount applied");
+	        rs.setData(finalOrder);
+	        
+	        return new ResponseEntity<>(rs, HttpStatus.OK);
+	    }
 	
 	
 

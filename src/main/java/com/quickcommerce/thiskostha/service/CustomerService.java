@@ -22,11 +22,15 @@ import com.quickcommerce.thiskostha.entity.Address;
 import com.quickcommerce.thiskostha.entity.CartItem;
 import com.quickcommerce.thiskostha.entity.Customer;
 import com.quickcommerce.thiskostha.entity.Item;
+import com.quickcommerce.thiskostha.entity.Order;
+import com.quickcommerce.thiskostha.entity.OrderStatus;
+import com.quickcommerce.thiskostha.entity.PaymentStatus;
 import com.quickcommerce.thiskostha.entity.Restaurant;
 import com.quickcommerce.thiskostha.repository.AddressRepository;
 import com.quickcommerce.thiskostha.repository.CartItemRepository;
 import com.quickcommerce.thiskostha.repository.CustomerRepository;
 import com.quickcommerce.thiskostha.repository.ItemRepository;
+import com.quickcommerce.thiskostha.repository.OrderRepository;
 import com.quickcommerce.thiskostha.repository.RestaurantRepository;
 
 @Service
@@ -41,6 +45,8 @@ public class CustomerService {
 	private CartItemRepository cartItemRepository;
 	@Autowired
 	private RestaurantRepository restaurantRepository;
+	@Autowired
+	private OrderRepository orderRepo;
 	@Autowired
 	private RestTemplate restTemplate;
     @Value("${myapp.api.key}")
@@ -288,6 +294,56 @@ public class CustomerService {
 			rs.setData(result);
 
 			return new ResponseEntity<ResponseStructure<SearchResponse>>(rs, HttpStatus.FOUND);
+	}
+	
+	
+	public ResponseEntity<ResponseStructure<Order>> cancelOrder(String phone, Long orderId, String reason) {
+	    Order order = orderRepo.findById(orderId)
+	        .orElseThrow(() -> new RuntimeException("Order not found with this id"));
+	    
+	    Customer customer = order.getCustomer();
+	    
+	    // Verify order belongs to customer
+	    if (!customer.getPhone().equals(phone)) {
+	        throw new RuntimeException("Order does not belong to this customer");
+	    }
+	    
+	    // Check if order can be cancelled
+	    if (order.getDeliveryStatus() == OrderStatus.DELIVERED || 
+	        order.getDeliveryStatus() == OrderStatus.CANCELLED) {
+	        throw new RuntimeException("Order cannot be cancelled at this stage");
+	    }
+	    
+	    // Handle cancellation based on delivery partner assignment
+	    if (order.getDeliveryPartner() == null) {
+	        // No delivery partner assigned - full refund
+	        if (order.getPaymentStatus() == PaymentStatus.COMPLETED) {
+	            // Refund to wallet
+	            double refundAmount = order.getTotalCost();
+	            customer.setWallet(customer.getWallet() + refundAmount);
+	        }
+	    } else {
+	        // Delivery partner already assigned
+	        if (order.getPayment().getMethod().equalsIgnoreCase("COD")) {
+	            // Add to penalty for COD
+	            double penaltyAmount = order.getTotalCost() ; // 10% penalty
+	            customer.setPenality(customer.getPenality() + penaltyAmount);
+	        }
+	    }
+	    
+	    // Update order status
+	    order.setDeliveryStatus(OrderStatus.CANCELLED);
+	    Order cancelledOrder = orderRepo.save(order);
+	    
+	    // Save customer updates
+	    customerRepo.save(customer);
+	    
+	    ResponseStructure<Order> rs = new ResponseStructure<>();
+	    rs.setStatuscode(HttpStatus.OK.value());
+	    rs.setMessage("Order cancelled successfully");
+	    rs.setData(cancelledOrder);
+	    
+	    return new ResponseEntity<>(rs, HttpStatus.OK);
 	}
 	
 	

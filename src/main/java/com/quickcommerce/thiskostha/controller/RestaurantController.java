@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.quickcommerce.thiskostha.dto.ResponseStructure;
 import com.quickcommerce.thiskostha.dto.RestaurantDTO;
 import com.quickcommerce.thiskostha.entity.Item;
+import com.quickcommerce.thiskostha.entity.Order;
 import com.quickcommerce.thiskostha.entity.Restaurant;
 import com.quickcommerce.thiskostha.service.RestaurantService;
 
@@ -58,6 +59,20 @@ public List<String> acceptOrder(@RequestParam double latitude,@RequestParam doub
 @PatchMapping("/additemtomenu/{phone}")
 public ResponseEntity<ResponseStructure<Item>> addItemToMenu(@RequestBody Item item, @PathVariable String phone) {
 	return restaurantService.addItemToMenu(item, phone);
+}
+
+@PostMapping("/cancelOrder")
+public ResponseEntity<ResponseStructure<Order>> cancelOrder(
+    @RequestParam String restaurantPhone, 
+    @RequestParam Long orderId,
+    @RequestParam(required = false) String reason) {
+    return restaurantService.cancelOrderByRestaurant(restaurantPhone, orderId, reason);
+}
+
+@PatchMapping("/unblockRestaurant")
+public ResponseEntity<ResponseStructure<String>> unblockRestaurant(
+    @RequestParam String restaurantPhone) {
+    return restaurantService.unblockRestaurant(restaurantPhone);
 }
 
 }

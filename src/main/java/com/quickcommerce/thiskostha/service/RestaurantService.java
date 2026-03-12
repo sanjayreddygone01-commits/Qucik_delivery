@@ -19,6 +19,8 @@ import com.quickcommerce.thiskostha.entity.Address;
 import com.quickcommerce.thiskostha.entity.Customer;
 import com.quickcommerce.thiskostha.entity.Item;
 import com.quickcommerce.thiskostha.entity.Order;
+import com.quickcommerce.thiskostha.entity.OrderStatus;
+import com.quickcommerce.thiskostha.entity.Payment;
 import com.quickcommerce.thiskostha.entity.Restaurant;
 import com.quickcommerce.thiskostha.repository.CustomerRepository;
 import com.quickcommerce.thiskostha.repository.OrderRepository;
@@ -35,6 +37,8 @@ public class RestaurantService {
 	    private RedisTemplate<String,String> redisTemplate;
 	    @Autowired
 	    private OrderRepository orderRepository;
+	    @Autowired
+	    private CustomerRepository customerRepo;
 	
 	@Autowired
 	private RestTemplate restTemplate;
@@ -176,7 +180,141 @@ public class RestaurantService {
 	         }
 	          return nearbyPartners;
 	    }
+	    
+	    public ResponseEntity<ResponseStructure<Order>> cancelOrderByRestaurant(
+	    	    String restaurantPhone, 
+	    	    Long orderId, 
+	    	    String reason) {
+	    	    
+	    	    // Step 1: Fetch restaurant & order
+	    	    Restaurant restaurant = restaurantRepo.findByPhone(restaurantPhone);
+	    	    if (restaurant == null) {
+	    	        ResponseStructure<Order> rs = new ResponseStructure<>();
+	    	        rs.setStatuscode(HttpStatus.NOT_FOUND.value());
+	    	        rs.setMessage("Restaurant not found");
+	    	        return new ResponseEntity<>(rs, HttpStatus.NOT_FOUND);
+	    	    }
+	    	    
+	    	    Order order = orderRepository.findById(orderId)
+	    	        .orElseThrow(() -> new RuntimeException("Order not found"));
+	    	    
+	    	    // Step 2: Verify order belongs to this restaurant
+	    	    if (!order.getRestaurant().getId().equals(restaurant.getId())) {
+	    	        ResponseStructure<Order> rs = new ResponseStructure<>();
+	    	        rs.setStatuscode(HttpStatus.BAD_REQUEST.value());
+	    	        rs.setMessage("Order does not belong to this restaurant");
+	    	        return new ResponseEntity<>(rs, HttpStatus.BAD_REQUEST);
+	    	    }
+	    	    
+	    	    // Step 3: Check if restaurant is already blocked
+	    	    if (restaurant.getIsBlocked() != null && restaurant.getIsBlocked()) {
+	    	        ResponseStructure<Order> rs = new ResponseStructure<>();
+	    	        rs.setStatuscode(HttpStatus.FORBIDDEN.value());
+	    	        rs.setMessage("Restaurant is blocked due to high penalties (≥ ₹1000). Clear penalties to proceed.");
+	    	        return new ResponseEntity<>(rs, HttpStatus.FORBIDDEN);
+	    	    }
+	    	    
+	    	    // Step 4: Check if order can be cancelled
+	    	    if (order.getDeliveryStatus() == OrderStatus.DELIVERED || 
+	    	        order.getDeliveryStatus() == OrderStatus.CANCELLED) {
+	    	        ResponseStructure<Order> rs = new ResponseStructure<>();
+	    	        rs.setStatuscode(HttpStatus.BAD_REQUEST.value());
+	    	        rs.setMessage("Order cannot be cancelled at this stage");
+	    	        return new ResponseEntity<>(rs, HttpStatus.BAD_REQUEST);
+	    	    }
+	    	    
+	    	    // Step 5: Calculate 10% penalty
+	    	    double penaltyAmount = order.getTotalCost() * 0.10;
+	    	    
+	    	    // Step 6: Check if restaurant has enough wallet balance (optional - can allow negative)
+	    	    Double currentWallet = restaurant.getWallet() != null ? restaurant.getWallet() : 0.0;
+	    	    Double newWallet = currentWallet - penaltyAmount;
+	    	    
+	    	    // Step 7: Deduct penalty from restaurant wallet
+	    	    restaurant.setWallet(newWallet);
+	    	    
+	    	    // Step 8: Update total penalties
+	    	    Double totalPenalties = restaurant.getTotalPenalties() != null ? restaurant.getTotalPenalties() : 0.0;
+	    	    totalPenalties += penaltyAmount;
+	    	    restaurant.setTotalPenalties(totalPenalties);
+	    	    
+	    	    // Step 9: Block restaurant if penalties >= 1000
+	    	    if (totalPenalties >= 1000.0) {
+	    	        restaurant.setIsBlocked(true);
+	    	        // Log blocking event
+	    	        System.out.println("🚫 Restaurant " + restaurant.getName() + " has been BLOCKED due to penalties ≥ ₹1000");
+	    	    }
+	    	    
+	    	    // Step 10: Handle customer refund based on payment method
+	    	    Customer customer = order.getCustomer();
+	    	    Payment payment = order.getPayment();
+	    	    
+	    	    if (payment.getMethod().equalsIgnoreCase("COD")) {
+	    	        // 🔴 COD: Add 10% penalty to customer wallet
+	    	        double customerRefund = penaltyAmount;
+	    	        customer.setWallet(customer.getWallet() + customerRefund);
+	    	        System.out.println("💰 COD Refund: ₹" + String.format("%.2f", customerRefund) + " added to customer wallet");
+	    	    } else {
+	    	        // ✅ PAID (Card/Online): Refund total amount + 10% penalty
+	    	        double totalRefund = order.getTotalCost() + penaltyAmount;
+	    	        customer.setWallet(customer.getWallet() + totalRefund);
+	    	        System.out.println("💰 Full Refund: ₹" + String.format("%.2f", totalRefund) + " (Order: ₹" + 
+	    	            String.format("%.2f", order.getTotalCost()) + " + Penalty: ₹" + String.format("%.2f", penaltyAmount) + ")");
+	    	    }
+	    	    
+	    	    // Step 11: Update order status to CANCELLED
+	    	    order.setDeliveryStatus(OrderStatus.CANCELLED);
+	    	    
+	    	    // Step 12: Save updates
+	    	    orderRepository.save(order);
+	    	    restaurantRepo.save(restaurant);
+	    	    customerRepo.save(customer);
+	    	    
+	    	    // Step 13: Build response
+	    	    ResponseStructure<Order> rs = new ResponseStructure<>();
+	    	    rs.setStatuscode(HttpStatus.OK.value());
+	    	    
+	    	    String message = "Order cancelled successfully. Penalty: ₹" + String.format("%.2f", penaltyAmount);
+	    	    if (totalPenalties >= 1000.0) {
+	    	        message += ". ⚠️  Restaurant BLOCKED - Total penalties: ₹" + String.format("%.2f", totalPenalties);
+	    	    }
+	    	    
+	    	    rs.setMessage(message);
+	    	    rs.setData(order);
+	    	    
+	    	    return new ResponseEntity<>(rs, HttpStatus.OK);
+	    	}
 
+	    	/**
+	    	 * Unblock restaurant if penalties are cleared (admin only)
+	    	 */
+	    	public ResponseEntity<ResponseStructure<String>> unblockRestaurant(String restaurantPhone) {
+	    	    Restaurant restaurant = restaurantRepo.findByPhone(restaurantPhone);
+	    	    if (restaurant == null) {
+	    	        ResponseStructure<String> rs = new ResponseStructure<>();
+	    	        rs.setStatuscode(HttpStatus.NOT_FOUND.value());
+	    	        rs.setMessage("Restaurant not found");
+	    	        return new ResponseEntity<>(rs, HttpStatus.NOT_FOUND);
+	    	    }
+	    	    
+	    	    // Check if total penalties are cleared
+	    	    Double totalPenalties = restaurant.getTotalPenalties() != null ? restaurant.getTotalPenalties() : 0.0;
+	    	    if (totalPenalties > 0.0) {
+	    	        ResponseStructure<String> rs = new ResponseStructure<>();
+	    	        rs.setStatuscode(HttpStatus.BAD_REQUEST.value());
+	    	        rs.setMessage("Restaurant still has pending penalties: ₹" + String.format("%.2f", totalPenalties));
+	    	        return new ResponseEntity<>(rs, HttpStatus.BAD_REQUEST);
+	    	    }
+	    	    
+	    	    // Unblock restaurant
+	    	    restaurant.setIsBlocked(false);
+	    	    restaurantRepo.save(restaurant);
+	    	    
+	    	    ResponseStructure<String> rs = new ResponseStructure<>();
+	    	    rs.setStatuscode(HttpStatus.OK.value());
+	    	    rs.setMessage("Restaurant unblocked successfully");
+	    	    return new ResponseEntity<>(rs, HttpStatus.OK);
+	    	}
 
 	
 
